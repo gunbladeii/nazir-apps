@@ -768,6 +768,7 @@
     <div class="tab-content">
       <div class="tab-empty">
         <h2 class="display-4">No tab selected!</h2>
+        @yield('loginlogout')
       </div>
       <div class="tab-loading">
         <div>

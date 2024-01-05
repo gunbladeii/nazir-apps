@@ -204,70 +204,67 @@
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Selamat Datang Warga Jemaah nazir,  @yield('username')</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="/home">Halaman Utama</a></li>
-              <li class="breadcrumb-item active">Pelantar Interaktif</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-    <div class="content">
-      <div class="container-fluid">
-        <div class="row">
-         @yield('container')
+  <div class="content-wrapper iframe-mode" data-widget="iframe" data-loading-screen="750">
+    <div class="nav navbar navbar-expand navbar-white navbar-light border-bottom p-0">
+      <div class="nav-item dropdown">
+        <a class="nav-link bg-danger dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Close</a>
+        <div class="dropdown-menu mt-0">
+          <a class="dropdown-item" href="#" data-widget="iframe-close" data-type="all">Close All</a>
+          <a class="dropdown-item" href="#" data-widget="iframe-close" data-type="all-other">Close All Other</a>
         </div>
-        <!-- /.row -->
       </div>
-      <!-- /.container-fluid -->
+      <a class="nav-link bg-light" href="#" data-widget="iframe-scrollleft"><i class="fas fa-angle-double-left"></i></a>
+      <ul class="navbar-nav overflow-hidden" role="tablist"></ul>
+      <a class="nav-link bg-light" href="#" data-widget="iframe-scrollright"><i class="fas fa-angle-double-right"></i></a>
+      <a class="nav-link bg-light" href="#" data-widget="iframe-fullscreen"><i class="fas fa-expand"></i></a>
     </div>
-    <!-- /.content -->
+    <div class="tab-content">
+      
+      <div>@yield('loginlogout')</div>
+      
+      {{-- <div class="tab-empty">
+        <h2 class="display-4">No tab selected!</h2>
+      </div> --}}
+      
+      <div class="tab-loading">
+        <div>
+          <h2 class="display-4">Tab is loading <i class="fa fa-sync fa-spin"></i></h2>
+        </div>
+      </div>
+    </div>
   </div>
   <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <strong>Jemaah Nazir &copy; 2024 <a href="https://moe.gov.my">Kementerian Pendidikan Malaysia</a>.</strong>
+    Hak cipta Terpelihara.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b>1.0
+    </div>
+  </footer>
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
   </aside>
   <!-- /.control-sidebar -->
-
-  <!-- Main Footer -->
-  <footer class="main-footer">
-    <strong>2024 <a href="https://moe.gov.my">Jemaah Nazir Kementerian Pendidikan Malaysia</a>.</strong>
-    Hak cipta Terpelihara.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 1.0
-    </div>
-  </footer>
 </div>
 <!-- ./wrapper -->
 
-<!-- REQUIRED SCRIPTS -->
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap -->
+<!-- jQuery UI 1.11.4 -->
+<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE -->
+<!-- overlayScrollbars -->
+<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
 <script src="dist/js/adminlte.js"></script>
-
-<!-- OPTIONAL SCRIPTS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-{{-- <!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script> --}}
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard3.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
 </body>
 </html>
