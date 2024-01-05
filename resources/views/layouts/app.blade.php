@@ -210,7 +210,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Selamat Datang @yield('username')</h1>
+            <h1 class="m-0">Selamat Datang Warga Jemaah nazir,  @yield('username')</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
