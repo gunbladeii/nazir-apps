@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/login', function () {
+    return view('login');
+});
+
 Route::get('/test', function () {
     return view('test');
 });
@@ -29,4 +33,16 @@ Auth::routes();
 
 Auth::routes(['reset' => true]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::middleware(['role:admin'])->group(function () {
+    // Only 'admin' role users can access these routes
+    Route::get('/admin', 'AdminController@index')->name('admin');
+    // ... more admin routes
+});
+
+Route::middleware(['role:user'])->group(function () {
+    // Only 'admin' role users can access these routes
+    Route::get('/admin', 'AdminController@index')->name('user');
+    // ... more admin routes
+});
