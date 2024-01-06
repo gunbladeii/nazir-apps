@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +18,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', function () {
-    return view('login');
+Route::get('/user', function () {
+    return view('user');
 });
+
+Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/test', function () {
     return view('test');
@@ -29,20 +32,22 @@ Route::get('/app', function () {
     return view('layouts.app');
 });
 
+// Standard authentication routes provided by Laravel
 Auth::routes();
 
+// Additional reset routes if needed
 Auth::routes(['reset' => true]);
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+// Admin routes, only accessible by users with the 'admin' role
 Route::middleware(['role:admin'])->group(function () {
-    // Only 'admin' role users can access these routes
     Route::get('/admin', 'AdminController@index')->name('admin');
     // ... more admin routes
 });
 
+// User routes, only accessible by users with the 'user' role
 Route::middleware(['role:user'])->group(function () {
-    // Only 'admin' role users can access these routes
-    Route::get('/admin', 'AdminController@index')->name('user');
-    // ... more admin routes
+    // Should be user-specific routes here, not admin
+    Route::get('/user', 'UserController@index')->name('user');
+    // ... more user routes
 });
+
