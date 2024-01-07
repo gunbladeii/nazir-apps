@@ -28,42 +28,6 @@
                   </li>
 @endsection
 
-@section('sidebar-menu') 
-<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-    <!-- Add icons to the links using the .nav-icon class
-         with font-awesome or any other icon font library -->
-    <li class="nav-item menu-open">
-      <a href="#" class="nav-link active">
-        <i class="nav-icon fas fa-tachometer-alt"></i>
-        <p>
-          Menu Utama
-          <i class="right fas fa-angle-left"></i>
-        </p>
-      </a>
-      <ul class="nav nav-treeview">
-        <li class="nav-item">
-          <a href="/user-dashboard" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Rekod Pemeriksaan</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/user-dashboard" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Pembinaan Instrumen</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/user-dashboard" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Analisis Data</p>
-          </a>
-        </li>
-      </ul>
-    </li>
-  </ul>
-@endsection
-
 @section('container')
 
     <div class="col-lg-12">
