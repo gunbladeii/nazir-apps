@@ -181,7 +181,7 @@
         </div>
         <div class="info">
           @if(auth()->check())
-          <a style="text-transform: uppercase">{{ auth()->user()->name }}</a>
+          <a style="text-transform: uppercase; color:azure">{{ auth()->user()->name }}</a>
           @endif
             {{-- starth with <a --}}
         </div>
