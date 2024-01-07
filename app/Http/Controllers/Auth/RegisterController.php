@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Role; // Make sure this path matches the actual location of your Role model
+use App\Models\Role;
 
 
 class RegisterController extends Controller
@@ -41,6 +41,7 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+        
     }
 
     /**
@@ -63,7 +64,6 @@ class RegisterController extends Controller
      *
      * @param  array  $data
      * @return \App\Models\User
-     * @return \App\Models\Role
      */
     protected function create(array $data)
     {
@@ -72,11 +72,12 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-    
-        // Assign default role
-        $defaultRole = Role::where('name', 'user')->first();
-        $user->roles()->attach($defaultRole);
-    
+
+        // Assign role to user
+        $userRole = Role::where('name', 'user')->firstOrFail(); // Use firstOrFail() to catch any unexpected errors if the role doesn't exist
+        $user->roles()->attach($userRole);
+
         return $user;
     }
+
 }

@@ -4,9 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Role;
-use App\Models\User;
-
+use Illuminate\Support\Facades\DB;
 
 class RolesTableSeeder extends Seeder
 {
@@ -15,24 +13,9 @@ class RolesTableSeeder extends Seeder
      */
     public function run(): void
     {
-       // Create roles
-    $adminRole = Role::create(['name' => 'admin']);
-    $userRole = Role::create(['name' => 'user']);
-
-    // Assign roles to users
-    $adminUser = User::find(1);
-    if ($adminUser) {
-        $adminUser->roles()->attach($adminRole);
-    } else {
-        // User with ID 1 not found, handle accordingly
+        DB::table('roles')->insert([
+            ['name' => 'admin'],
+            ['name' => 'user'],
+        ]);
     }
-
-    $normalUser = User::find(2);
-    if ($normalUser) {
-        $normalUser->roles()->attach($userRole);
-    } else {
-        // User with ID 2 not found, handle accordingly
-    }
-
-        }
 }

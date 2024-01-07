@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
+use App\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,36 +20,35 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/user', function () {
-    return view('user');
+
+
+Route::get('/login', function () {
+    return view('login');
 });
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('/test', function () {
-    return view('test');
-});
-
-Route::get('/app', function () {
-    return view('layouts.app');
-});
-
-// Standard authentication routes provided by Laravel
 Auth::routes();
 
-// Additional reset routes if needed
-Auth::routes(['reset' => true]);
+Route::get('/home', function () {
+    // Redirect to the appropriate dashboard based on the role
+    if (Auth::user()->roles->contains('name', 'admin')) {
+        return redirect('/admin-dashboard');
+    } else {
+        return redirect('/user-dashboard');
+    }
+})->middleware('auth');
 
-// Admin routes, only accessible by users with the 'admin' role
-Route::middleware(['role:admin'])->group(function () {
-    Route::get('/admin', 'AdminController@index')->name('admin');
-    // ... more admin routes
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin');
+    Route::get('/control', [AdminController::class, 'control'])->name('admin');
 });
 
-// User routes, only accessible by users with the 'user' role
-Route::middleware(['role:user'])->group(function () {
-    // Should be user-specific routes here, not admin
-    Route::get('/user', 'UserController@index')->name('user');
-    // ... more user routes
+
+Route::middleware(['auth', 'role:user'])->group(function () {
+    Route::get('/user-dashboard', [UserController::class, 'index'])->name('user');
 });
+
+Route::patch('/user/{user}/role', [AdminController::class, 'updateRole'])->name('admin.updateRole');
+Route::get('/control', [AdminController::class, 'control'])->middleware('auth');
+Route::get('/admin-dashboard', [AdminController::class, 'index'])->middleware('auth');
 

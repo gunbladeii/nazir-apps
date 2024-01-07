@@ -17,3 +17,11 @@
                     <a href="#" class="nav-link">Contact</a>
                   </li>
 @endsection
+
+@section('container')
+
+    <div class="col-lg-12">
+      <a>Selamat Datang</a>
+    </div>
+    <!-- /.col-md-6 --> 
+@endsection

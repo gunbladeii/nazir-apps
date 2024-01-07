@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Role;
 
 class User extends Authenticatable
 {
@@ -44,10 +43,14 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
     public function roles()
-{
-    return $this->belongsToMany(Role::class);
-}
+    {
+        return $this->belongsToMany(Role::class);
+    }
+    // In your User model:
+
+    public function hasRole($role)
+    {
+        return $this->roles->contains('name', $role);
+    }
 
 }
-
-
