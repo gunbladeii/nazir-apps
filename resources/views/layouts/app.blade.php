@@ -202,7 +202,41 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         @yield('sidebar-menu')
-        {{-- starh with <ul --}}
+        @if(auth()->check() && auth()->user()->hasRole('admin')) 
+         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
+                with font-awesome or any other icon font library -->
+            <li class="nav-item menu-open">
+              <a href="#" class="nav-link active">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Menu Utama
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="/control" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Setting</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/admin-dashboard" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Halaman Admin</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/admin-dashboard" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Tetapan</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        @endif
       </nav>
       <!-- /.sidebar-menu -->
     </div>
