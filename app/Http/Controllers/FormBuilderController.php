@@ -10,27 +10,24 @@ class FormBuilderController extends Controller
     // Show the form builder page
     public function index()
     {
-        $user = auth()->user(); // Get the currently authenticated user
-        $userForms = $user->forms; // Get all forms associated with the user
-
-        return view('user.formBuilder', compact('userForms')); // Pass the forms to your view
+        return view('user.formBuilder', compact('data'));
     }
 
     // Handle form submission
     public function store(Request $request)
     {
-        // Validate the request as needed
-        $request->validate([
-            // Validation rules for your form data
-            'structure' => 'required|json', // Assuming 'structure' is a JSON string
+        // Validate the request data
+        $validatedData = $request->validate([
+            'structure' => 'required', // Your validation rules
         ]);
 
-        // Create the form structure
-        $form = new Form; // Make sure this references your actual Form model
-        $form->structure = $request->input('structure'); // No need to json_encode, as it's already a JSON string from the input
-        $form->user_id = auth()->id(); // Set the user_id to the currently authenticated user's id
+        // Create a new form instance and save it to the database
+        $form = new Form; // Assuming you have a Form model
+        $form->user_id = auth()->id(); // Assign the user id
+        $form->structure = json_encode($validatedData['structure']); // Store the form structure
         $form->save();
 
+        // Redirect back or to another page with a success message
         return back()->with('success', 'Form saved successfully!');
     }
 }

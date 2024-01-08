@@ -60,4 +60,3 @@ Route::post('/admin/add-user', [AdminController::class, 'addUser'])->name('admin
 Route::post('/user/change-password', [UserController::class, 'changePassword'])->name('user.changePassword');
 Route::get('/form-builder', [FormBuilderController::class, 'index'])->name('form-builder.index');
 Route::post('/form-builder', [FormBuilderController::class, 'store'])->name('form-builder.store');
-Route::post('/form-builder/store', [FormBuilderController::class, 'store'])->name('form-builder.store');
