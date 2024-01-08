@@ -20,7 +20,14 @@ class AdminController extends Controller
         $users = User::with('roles')->get();
         $roles = Role::all(); // Make sure you have a Role model and it's imported at the top of your controller
         return view('admin.control', compact('users', 'roles'));
-    }       
+    }  
+    
+    public function daftar()
+    {
+        $users = User::with('roles')->get();
+        $roles = Role::all(); // Make sure you have a Role model and it's imported at the top of your controller
+        return view('admin.daftar', compact('users', 'roles'));
+    }  
 
     public function updateRole(Request $request, $userId)
     {

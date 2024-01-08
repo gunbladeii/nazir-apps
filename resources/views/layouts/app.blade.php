@@ -268,6 +268,12 @@
                     <p>Kawalan Kualiti</p>
                   </a>
                 </li>
+                <li class="nav-item">
+                  <a href="/daftar" class="nav-link">
+                    <i class="fas fa-tools nav-icon"></i>
+                    <p>Daftar Pengguna</p>
+                  </a>
+                </li>
               </ul>
             </li>
           </ul>

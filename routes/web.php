@@ -41,6 +41,7 @@ Route::get('/home', function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin');
     Route::get('/control', [AdminController::class, 'control'])->name('admin');
+    Route::get('/daftar', [AdminController::class, 'daftar'])->name('admin');
 });
 
 
