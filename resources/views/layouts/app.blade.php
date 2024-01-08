@@ -181,7 +181,7 @@
         </div>
         <div class="info">
           @if(auth()->check())
-          <a style="text-transform: uppercase; color:azure">{{ auth()->user()->name }}</a>
+          <span class="badge bg-warning"><a style="text-transform: uppercase; color:azure">{{ auth()->user()->name }}</a></span>
           @endif
             {{-- starth with <a --}}
         </div>
@@ -251,21 +251,21 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="/control" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Setting</p>
-                  </a>
-                </li>
-                <li class="nav-item">
                   <a href="/admin-dashboard" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
+                    <i class="fas fa-users-cog nav-icon"></i>
                     <p>Halaman Admin</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="/admin-dashboard" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
+                  <a href="/control" class="nav-link">
+                    <i class="fas fa-tools nav-icon"></i>
                     <p>Tetapan</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/admin-dashboard" class="nav-link">
+                    <i class="fas fa-truck-loading nav-icon"></i>
+                    <p>Kawalan Kualiti</p>
                   </a>
                 </li>
               </ul>
