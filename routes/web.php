@@ -41,12 +41,12 @@ Route::get('/home', function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin');
     Route::get('/control', [AdminController::class, 'control'])->name('admin');
-    Route::get('/daftar', [AdminController::class, 'daftar'])->name('admin');
 });
 
 
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/user-dashboard', [UserController::class, 'index'])->name('user');
+    Route::get('/changePassword', [UserController::class, 'pagePassword'])->name('user');
 });
 
 Route::patch('/user/{user}/role', [AdminController::class, 'updateRole'])->name('admin.updateRole');
@@ -55,4 +55,6 @@ Route::get('/admin-dashboard', [AdminController::class, 'index'])->middleware('a
 
 Route::post('/user/{user}/update-name', [AdminController::class, 'updateName'])->name('admin.updateName');
 Route::post('/admin/add-user', [AdminController::class, 'addUser'])->name('admin.add-user');
+Route::post('/user/change-password', [UserController::class, 'changePassword'])->name('user.changePassword');
+
 

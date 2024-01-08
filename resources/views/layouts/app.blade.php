@@ -233,6 +233,12 @@
                   <p>Analisis Data</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="/changePassword" class="nav-link">
+                  <i class="fas fa-lock-open nav-icon"></i>
+                  <p>Tukar Kata Laluan</p>
+                </a>
+              </li>
             </ul>
           </li>
         </ul>
