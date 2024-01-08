@@ -55,7 +55,12 @@
                     @foreach ($users as $user)
                     <tr>
                         <td>{{ $user->id }}</td>
-                        <td>{{ $user->name }}</td>
+                        <td>
+                          @csrf
+                          @method('PATCH') {{-- This directive is used to spoof the PATCH method --}}
+                          <span class="editable" onclick="makeEditable(this)">{{ $user->name }}</span>
+                          <input type="text" class="form-control d-none" value="{{ $user->name }}" onblur="submitNameChange(this, {{ $user->id }})" onkeyup="handleKeyUp(event, this)">
+                        </td>
                         <td>{{ $user->email }}</td>
                         <td>
                             @foreach ($user->roles as $role)
@@ -126,4 +131,51 @@
     });
   });
 </script>
+<script>
+  // Function to make the span editable
+  function makeEditable(element) {
+      let input = element.nextElementSibling;
+      element.classList.add('d-none');
+      input.classList.remove('d-none');
+      input.focus();
+  }
+  
+  // Function to handle the keyup event for input (to save on enter key press)
+  function handleKeyUp(event, input) {
+      if(event.key === 'Enter') {
+          input.blur(); // This will trigger the onblur event
+      }
+  }
+  
+  // Function to submit the name change
+  function submitNameChange(input, userId) {
+      let newName = input.value;
+      let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); // CSRF token
+  
+      // Hide the input field and show the span element
+      input.classList.add('d-none');
+      input.previousElementSibling.classList.remove('d-none');
+      input.previousElementSibling.textContent = newName;
+  
+      // Send the request to the server
+      fetch(`/user/${userId}/update-name`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'X-CSRF-TOKEN': token
+          },
+          body: JSON.stringify({ name: newName })
+      })
+      .then(response => response.json())
+      .then(data => {
+          // Handle response here
+          console.log(data);
+          // Update the UI based on the response if necessary
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+  }
+  </script>  
 @endsection

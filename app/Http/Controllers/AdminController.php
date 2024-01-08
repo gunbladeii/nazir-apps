@@ -29,6 +29,19 @@ class AdminController extends Controller
         return view('admin.daftar', compact('users', 'roles'));
     }  
 
+    public function updateName(Request $request, $userId)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+    
+        $user = User::findOrFail($userId);
+        $user->name = $request->name;
+        $user->save();
+    
+        return response()->json(['success' => 'User name updated successfully.']);
+    }    
+
     public function updateRole(Request $request, $userId)
     {
         $user = User::findOrFail($userId);
