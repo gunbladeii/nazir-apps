@@ -208,7 +208,7 @@
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-home"></i>
               <p>
                 Menu Utama
                 <i class="right fas fa-angle-left"></i>
@@ -217,19 +217,19 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="/user-dashboard" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-clipboard nav-icon"></i>
                   <p>Rekod Pemeriksaan</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="/user-dashboard" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-window-restore nav-icon"></i>
                   <p>Pembinaan Instrumen</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="/user-dashboard" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-chart-line nav-icon"></i>
                   <p>Analisis Data</p>
                 </a>
               </li>
@@ -243,7 +243,7 @@
                 with font-awesome or any other icon font library -->
             <li class="nav-item menu-open">
               <a href="#" class="nav-link active">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <i class="nav-icon fas fa-home"></i>
                 <p>
                   Menu Utama
                   <i class="right fas fa-angle-left"></i>
