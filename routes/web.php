@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Models\Role;
+use App\Http\Controllers\FormBuilderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/user-dashboard', [UserController::class, 'index'])->name('user');
     Route::get('/changePassword', [UserController::class, 'pagePassword'])->name('user');
+    Route::get('/formBuilder', [UserController::class, 'formBuilder'])->name('user');
 });
 
 Route::patch('/user/{user}/role', [AdminController::class, 'updateRole'])->name('admin.updateRole');
@@ -56,5 +58,6 @@ Route::get('/admin-dashboard', [AdminController::class, 'index'])->middleware('a
 Route::post('/user/{user}/update-name', [AdminController::class, 'updateName'])->name('admin.updateName');
 Route::post('/admin/add-user', [AdminController::class, 'addUser'])->name('admin.add-user');
 Route::post('/user/change-password', [UserController::class, 'changePassword'])->name('user.changePassword');
-
-
+Route::get('/form-builder', [FormBuilderController::class, 'index'])->name('form-builder.index');
+Route::post('/form-builder', [FormBuilderController::class, 'store'])->name('form-builder.store');
+Route::post('/form-builder/store', [FormBuilderController::class, 'store'])->name('form-builder.store');

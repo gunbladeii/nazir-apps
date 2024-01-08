@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Form;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -21,6 +22,13 @@ class UserController extends Controller
         $users = User::with('roles')->get();
         $roles = Role::all(); // Make sure you have a Role model and it's imported at the top of your controller
         return view('user.changePassword', compact('users', 'roles'));
+    }
+
+    public function formBuilder()
+    {
+        $users = User::with('roles')->get();
+        $roles = Role::all(); // Make sure you have a Role model and it's imported at the top of your controller
+        return view('user.formBuilder', compact('users', 'roles'));
     }
     
 

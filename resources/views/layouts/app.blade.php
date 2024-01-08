@@ -222,7 +222,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/user-dashboard" class="nav-link">
+                <a href="/formBuilder" class="nav-link">
                   <i class="fas fa-window-restore nav-icon"></i>
                   <p>Pembinaan Instrumen</p>
                 </a>

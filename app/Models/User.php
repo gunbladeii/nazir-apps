@@ -53,4 +53,9 @@ class User extends Authenticatable
         return $this->roles->contains('name', $role);
     }
 
+    public function forms()
+    {
+        return $this->hasMany(Form::class); // Replace Form::class with your actual Form model
+    }
+
 }
