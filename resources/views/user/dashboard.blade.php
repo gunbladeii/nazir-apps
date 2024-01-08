@@ -1,4 +1,4 @@
-{{-- resources/views/admin/dashboard.blade.php --}}
+{{-- resources/views/user/dashboard.blade.php --}}
 @extends('layouts.app')
 @section('menu-login')
                  
