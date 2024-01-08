@@ -18,7 +18,7 @@
 @section('container')
 
     <div class="col-lg-12">
-      <a>Selamat Datang</a>
+      <img src="https://fastly.4sqi.net/img/general/600x600/41604833_AKxd3koY99wd-vsF2hbYhDbnensohZFg42xvNCXd9CM.jpg" class="rounded mx-auto d-block" alt="...">
     </div>
     <!-- /.col-md-6 --> 
 @endsection
