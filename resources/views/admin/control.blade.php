@@ -87,6 +87,35 @@
         </div>
         <!-- /.card-body -->
       </div>
+
+            {{-- Add this section above or below your current users table --}}
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Tambah Pengguna Baharu</h3>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url('/admin/add-user') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="newName">Nama Penuh:</label>
+                            <input type="text" class="form-control" id="newName" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newEmail">Alamat E-Mel:</label>
+                            <input type="email" class="form-control" id="newEmail" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newRole">Peranan:</label>
+                            <select name="role_id" class="form-control" id="newRole" required>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Tambah Pengguna</button>
+                    </form>
+                </div>
+            </div>
     </div>
     <!-- /.col-md-12 --> 
 @endsection

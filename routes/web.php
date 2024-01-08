@@ -54,4 +54,5 @@ Route::get('/control', [AdminController::class, 'control'])->middleware('auth');
 Route::get('/admin-dashboard', [AdminController::class, 'index'])->middleware('auth');
 
 Route::post('/user/{user}/update-name', [AdminController::class, 'updateName'])->name('admin.updateName');
+Route::post('/admin/add-user', [AdminController::class, 'addUser'])->name('admin.add-user');
 

@@ -269,9 +269,9 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="/daftar" class="nav-link">
+                  <a href="/admin-dashboard" class="nav-link">
                     <i class="fas fa-tools nav-icon"></i>
-                    <p>Daftar Pengguna</p>
+                    <p>Paparan Iklan/Hebahan</p>
                   </a>
                 </li>
               </ul>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -57,6 +58,30 @@ class AdminController extends Controller
         return back()->with('success', 'Role updated successfully.');
     }
     
+    public function addUser(Request $request)
+    {
+        // Validate the request...
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:users,email',
+            'role_id' => 'required|exists:roles,id',
+        ]);
+
+        // Create the user...
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            // You might want to set a default password or create a random one
+            'password' => Hash::make('JNF@Password1'),
+        ]);
+
+        // Attach the role...
+        $user->roles()->attach($validatedData['role_id']);
+
+        // Redirect back with a success message...
+        return back()->with('success', 'New user added successfully.');
+    }
+
 
 }
 
