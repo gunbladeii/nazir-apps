@@ -17,6 +17,7 @@
   @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
   @yield('head-plugin')
+  @stack('styles')
 </head>
 <!--
 `body` tag options:
@@ -352,5 +353,6 @@
 
 <script src="dist/js/pages/dashboard2.js"></script>
 @yield('footer-plugin')
+@stack('scripts')
 </body>
 </html>

@@ -17,6 +17,13 @@ class UserController extends Controller
         return view('user.dashboard', compact('users', 'roles'));
     }
 
+    public function showInstruments()
+{
+    $user_id = auth()->id();
+    $forms = Form::where('user_id', $user_id)->get();
+    return view('user.papar-instrumen', compact('forms'));
+}
+
     public function pagePassword()
     {
         $users = User::with('roles')->get();

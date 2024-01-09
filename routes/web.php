@@ -49,6 +49,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/user-dashboard', [UserController::class, 'index'])->name('user');
     Route::get('/changePassword', [UserController::class, 'pagePassword'])->name('user');
     Route::get('/formBuilder', [UserController::class, 'formBuilder'])->name('user');
+    Route::get('/paparInstrumen', [UserController::class, 'showInstruments'])->name('user.instruments');
 });
 
 Route::patch('/user/{user}/role', [AdminController::class, 'updateRole'])->name('admin.updateRole');
@@ -59,4 +60,4 @@ Route::post('/user/{user}/update-name', [AdminController::class, 'updateName'])-
 Route::post('/admin/add-user', [AdminController::class, 'addUser'])->name('admin.add-user');
 Route::post('/user/change-password', [UserController::class, 'changePassword'])->name('user.changePassword');
 Route::get('/form-builder', [FormBuilderController::class, 'index'])->name('form-builder.index');
-Route::post('/form-builder', [FormBuilderController::class, 'store'])->name('form-builder.store');
+Route::post('/form-builder/store', [FormBuilderController::class, 'store'])->name('form-builder.store');

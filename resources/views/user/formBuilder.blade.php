@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('menu-login')
                  
                   @if (Route::has('login'))
@@ -20,93 +21,124 @@
                       </li>
                   @endif
                   <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
+                    <a href="/paparInstrumen" class="nav-link">Papar instrumen</a>
                   </li>
 @endsection
+
 @section('container')
+<form id="form-builder-form" action="{{ route('form-builder.store') }}" method="post">
+    @csrf
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">Pembinaan Instrumen/Aneks</h4>
+        <h4 class="card-title">Bina Instrumen</h4>
     </div>
-        <div class="card-body">
-            <div class="form-builder">
+    <div class="card-body">
+        <div class="form-builder">
                 <div class="form-group">
                     <label>Pilih elemen</label>
                     <select class="form-control element-selector">
                         <option value="text">Input Teks</option>
                         <option value="textarea">Teks Panjang</option>
                         <option value="radio">Butang Radio</option>
+                        <option value="checkbox">Checkbox</option>
+                        <option value="date">Date</option>
                         <!-- Add more form elements as needed -->
                     </select>
                 </div>
-                <button class="btn btn-primary add-element">Tambah Elemen</button>
-            </div>
+                <button type="button" class="btn btn-primary add-element">Tambah Elemen</button>               
+            
         </div>
-        <div class="card-body">
-            <div class="form-builder">
-            <form id="form-builder-form" action="{{ route('form-builder.store') }}" method="post">
-                @csrf
-                <div class="form-preview">
-                    <!-- Elements will be previewed here -->
-                    <!-- Hidden input to store the form data -->
-                    <input type="hidden" name="form_data" id="form-data">
-                </div>
-                <div class form-group>
-                <button type="submit" class="btn btn-success">Jana Instrumen</button>
-                </div>
-            </form>
-            </div>      
-        </div>
+    </div>
 </div>
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Paparan Instrumen</h4>
+    </div>
+    <div class="card-body">
+        <div class="form-preview">
+            <!-- Elements will be previewed here -->
+        </div>
+        
+        <!-- The submit button should be inside the form -->
+        <button type="submit" class="btn btn-success">Jana Instrumen</button>
+        <input type="hidden" name="form_data" id="form-data">   
+    </div>
+</div>
+</form>
 @endsection
 
 @section('footer-plugin')
-<!-- Include jQuery and Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
-$(document).ready(function() {
-    $('.add-element').on('click', function() {
-        var elementType = $('.element-selector').val();
-        var elementHtml = '';
-        
-        // Create HTML for the selected element
-        if(elementType === 'text') {
-            elementHtml = '<input type="text" class="form-control" />';
-        } else if(elementType === 'textarea') {
-            elementHtml = '<textarea class="form-control"></textarea>';
-        } else if(elementType === 'radio') {
-            elementHtml = '<div><input type="radio" name="options" /> Option 1</div>';
-            // Add more options as needed
-        }
-        
-        // Append the element HTML to the form preview
-        $('.form-preview').append(elementHtml);
+    $(document).ready(function() {
+        $('.add-element').on('click', function() {
+            var elementType = $('.element-selector').val();
+            var elementLabel = prompt("Enter the label for this element:");
+            var elementHtml = '';
+            console.log("The 'Tambah Elemen' button was clicked.");
+    
+            // Ensure the user entered a label
+            if (!elementLabel) return;
+    
+            // Create HTML for the selected element
+            switch(elementType) {
+                case 'text':
+                    elementHtml += '<div class="form-group"><label>' + elementLabel + '</label><input type="text" class="form-control" name="elements[]" data-type="text"></div>';
+                    break;
+                case 'textarea':
+                    elementHtml += '<div class="form-group"><label>' + elementLabel + '</label><textarea class="form-control" name="elements[]" data-type="textarea"></textarea></div>';
+                    break;
+                case 'radio':
+                    elementHtml += '<div class="form-group"><label>' + elementLabel + '</label><input type="radio" class="form-control" name="elements[]" data-type="radio" value="Option 1"> Option 1</div>';
+                    break;
+                case 'checkbox':
+                    let checkboxOptions = []; // Array to hold checkbox options
+                    let checkboxLabel = prompt("Enter the label for checkbox options (comma separated):");
+                    if (checkboxLabel) {
+                        let options = checkboxLabel.split(',');
+                        options.forEach(function(option, index) {
+                            checkboxOptions.push({
+                                label: option.trim(), // Trim whitespace
+                                value: 'option' + (index + 1) // Create a value for the option
+                            });
+                            elementHtml += '<div class="form-check"><input type="checkbox" class="form-check-input" name="elements[]" data-type="checkbox" value="' + 'option' + (index + 1) + '">' + option.trim() + '</div>';
+                        });
+                    }
+                    break;
+                case 'date':
+                    elementHtml += '<div class="form-group"><label>' + elementLabel + '</label><input type="date" class="form-control" name="elements[]" data-type="date"></div>';
+                    break;
+            }
+    
+            // Append the element HTML to the form preview
+            $('.form-preview').append(elementHtml);
+        });
+    
+        $('#form-builder-form').on('submit', function() {
+            var formElements = [];
+
+            $('.form-preview .form-group').each(function() {
+                var label = $(this).find('label').text();
+                var name2 = $(this).find('name').text();
+                var $el = $(this).find('.form-control, .form-check-input');
+                var type = $el.data('type');
+                var name = 'form_data'; // Use the name expected by the backend
+                var value;
+
+                if(type === 'checkbox') {
+                    value = $el.filter(':checked').map(function() {
+                        return this.value;
+                    }).get();
+                } else {
+                    value = $el.val();
+                }
+
+                formElements.push({ type: type, name: name2, label: label, value: value });
+            });
+
+            $('#form-data').val(JSON.stringify(formElements));
+            // No need to append a new hidden input since we are setting the value of the existing one.
+        });
+
     });
-});
-
-$('#form-builder-form').on('submit', function() {
-    // Initialize an array to hold the form elements
-    var formElements = [];
-
-    // Iterate over each form element added
-    $('.form-preview').children().each(function() {
-        var $el = $(this);
-        var type = $el.prop('tagName').toLowerCase();
-        var name = $el.attr('name');
-        var value = $el.val();
-
-        // Push a representation of the form element to the array
-        formElements.push({ type: type, name: name, value: value });
-    });
-
-    // Convert the form elements array to a JSON string
-    var formJson = JSON.stringify(formElements);
-
-    // Set the value of the hidden input to the JSON string
-    $('#form-data').val(formJson);
-
-    // The form will now submit the JSON string to the server
-});
-
-</script>
+    </script>    
 @endsection
