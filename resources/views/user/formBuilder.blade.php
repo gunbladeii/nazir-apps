@@ -88,7 +88,18 @@
                     elementHtml += '<div class="form-group"><label>' + elementLabel + '</label><textarea class="form-control" name="elements[]" data-type="textarea"></textarea></div>';
                     break;
                 case 'radio':
-                    elementHtml += '<div class="form-group"><label>' + elementLabel + '</label><input type="radio" class="form-control" name="elements[]" data-type="radio" value="Option 1"> Option 1</div>';
+                    let radioOptions = []; // Array to hold radio options
+                    let radioLabel = prompt("Enter the label for radio options (comma separated):");
+                    if (radioLabel) {
+                        let options = radioLabel.split(',');
+                        options.forEach(function(option, index) {
+                            radioOptions.push({
+                                label: option.trim(), // Trim whitespace
+                                value: 'option' + (index + 1) // Create a value for the option
+                            });
+                            elementHtml += '<div class="form-check"><input type="radio" class="form-check-input" name="elements[]" data-type="radio" value="' + 'option' + (index + 1) + '">' + option.trim() + '</div>';
+                        });
+                    }
                     break;
                 case 'checkbox':
                     let checkboxOptions = []; // Array to hold checkbox options
@@ -113,32 +124,39 @@
             $('.form-preview').append(elementHtml);
         });
     
-        $('#form-builder-form').on('submit', function() {
+        $('#form-builder-form').on('submit', function(e) {
             var formElements = [];
 
             $('.form-preview .form-group').each(function() {
-                var label = $(this).find('label').text();
-                var name2 = $(this).find('name').text();
-                var $el = $(this).find('.form-control, .form-check-input');
-                var type = $el.data('type');
-                var name = 'form_data'; // Use the name expected by the backend
-                var value;
+                var label = $(this).find('label').first().text();
+                var $input = $(this).find('input, textarea, select').first();
+                var type = $input.data('type');
+                var name = $input.attr('name');
+                var value = $input.val();
+                var options = [];
 
-                if(type === 'checkbox') {
-                    value = $el.filter(':checked').map(function() {
-                        return this.value;
-                    }).get();
-                } else {
-                    value = $el.val();
+                if(type === 'radio' || type === 'checkbox') {
+                    // Capture all options for radio and checkboxes
+                    $(this).find('.form-check-input').each(function() {
+                        options.push({
+                            label: $(this).next('label').text(),
+                            value: $(this).val(),
+                            checked: $(this).is(':checked')
+                        });
+                    });
+                    value = options;
                 }
 
-                formElements.push({ type: type, name: name2, label: label, value: value });
+                formElements.push({
+                    type: type,
+                    name: name,
+                    label: label,
+                    value: value
+                });
             });
 
             $('#form-data').val(JSON.stringify(formElements));
-            // No need to append a new hidden input since we are setting the value of the existing one.
         });
-
     });
     </script>    
 @endsection

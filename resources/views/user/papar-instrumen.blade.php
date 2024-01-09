@@ -39,26 +39,28 @@
         @foreach ($structure as $element)
             <div class="form-group">
                 @if (isset($element->label))
-                    <label>{{ $element->label }}</label> {{-- Display the label --}}
+                    <label>{{ $element->label }}</label>
                 @endif
 
                 @if ($element->type == 'text')
                     <input type="text" class="form-control" name="{{ $element->name }}" value="{{ $element->value ?? '' }}" />
                 @elseif ($element->type == 'textarea')
                     <textarea class="form-control" name="{{ $element->name }}">{{ $element->value ?? '' }}</textarea>
+                @elseif ($element->type == 'date')
+                    <input type="date" class="form-control" name="{{ $element->name }}" value="{{ $element->value ?? '' }}" />
                 @elseif ($element->type == 'radio' && isset($element->options))
-                    {{-- Loop through radio options --}}
                     @foreach ($element->options as $option)
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="{{ $element->name }}" value="{{ $option->value }}" {{ $option->value == $element->value ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="{{ $element->name }}" value="{{ $option->value }}" 
+                                {{ (isset($element->value) && $element->value == $option->value) ? 'checked' : '' }}>
                             <label class="form-check-label">{{ $option->label }}</label>
                         </div>
                     @endforeach
                 @elseif ($element->type == 'checkbox' && isset($element->options))
-                    {{-- Loop through checkbox options --}}
                     @foreach ($element->options as $option)
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="{{ $element->name }}[]" value="{{ $option->value }}" @if(is_array($element->value) && in_array($option->value, $element->value)) checked @endif>
+                            <input class="form-check-input" type="checkbox" name="{{ $element->name }}[]" value="{{ $option->value }}" 
+                                {{ (isset($element->value) && is_array($element->value) && in_array($option->value, $element->value)) ? 'checked' : '' }}>
                             <label class="form-check-label">{{ $option->label }}</label>
                         </div>
                     @endforeach
@@ -69,4 +71,3 @@
     @endforeach
 </div>
 @endsection
-
