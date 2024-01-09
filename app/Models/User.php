@@ -58,4 +58,9 @@ class User extends Authenticatable
         return $this->hasMany(Form::class); // Replace Form::class with your actual Form model
     }
 
+    public function formsElement()
+    {
+        return $this->hasMany(FormElementModel::class); // Replace Form::class with your actual Form model
+    }
+
 }

@@ -135,17 +135,19 @@
                 var value = $input.val();
                 var options = [];
 
-                if(type === 'radio' || type === 'checkbox') {
+                if (type === 'radio' || type === 'checkbox') {
                     // Capture all options for radio and checkboxes
                     $(this).find('.form-check-input').each(function() {
-                        options.push({
-                            label: $(this).next('label').text(),
-                            value: $(this).val(),
-                            checked: $(this).is(':checked')
-                        });
+                        if ($(this).is(':checked')) {
+                            options.push({
+                                label: $(this).next('label').text(),
+                                value: $(this).val()
+                            });
+                        }
                     });
-                    value = options;
+                    value = options; // Assign the array of selected options to value
                 }
+
 
                 formElements.push({
                     type: type,

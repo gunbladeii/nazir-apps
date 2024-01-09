@@ -14,35 +14,23 @@ class FormBuilderController extends Controller
     }
 
     // Handle form submission
-    public function store(Request $request)
+    public function store(Request $request, $formId) // Assume $formId is passed as a parameter
     {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'form_data' => 'required', // Ensure this matches your form's input name
-        ]);
-
-        // Decode the form data from JSON to associative array
-        $formElements = json_decode($validatedData['form_data'], true);
-
-        // Create a new form instance and save it
-        $form = new Form; // Assuming you have a Form model
-        $form->user_id = auth()->id(); // Assign the user id if you need to associate the form with a user
-        $form->structure = $validatedData['form_data']; // Save the raw JSON data
-        $form->save();
-        // Process each form element and save it to the database
+        $formElements = json_decode($request->input('form_data'), true);
+        
         foreach ($formElements as $element) {
-            // Here you would create a new database entry for each form element
-            // Make sure you have a database column to store the label
-            // Example:
-            // $newElement = new FormElementModel(); // Replace with your actual model
-            // $newElement->label = $element['label'];
-            // $newElement->type = $element['type'];
-            // $newElement->name = $element['name'];
-            // $newElement->value = $element['value'];
-            // $newElement->save();
+            $newElement = new FormElementModel([
+                'user_id' => auth()->id(), // Get the authenticated user's ID
+                'form_id' => $formId, // Use the passed form ID
+                'label'   => $element['label'],
+                'type'    => $element['type'],
+                'name'    => $element['name'],
+                'value'   => is_array($element['value']) ? json_encode($element['value']) : $element['value'],
+            ]);
+            
+            $newElement->save();
         }
 
-        // Redirect back or to another page with a success message
         return back()->with('success', 'Form saved successfully!');
     }
 
