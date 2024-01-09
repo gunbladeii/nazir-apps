@@ -18,11 +18,11 @@ class UserController extends Controller
     }
 
     public function showInstruments()
-{
-    $user_id = auth()->id();
-    $forms = Form::where('user_id', $user_id)->get();
-    return view('user.papar-instrumen', compact('forms'));
-}
+    {
+        $user_id = auth()->id();
+        $forms = Form::where('user_id', $user_id)->get();
+        return view('user.papar-instrumen', compact('forms'));
+    }
 
     public function pagePassword()
     {
@@ -34,10 +34,10 @@ class UserController extends Controller
     public function formBuilder()
     {
         $users = User::with('roles')->get();
-        $roles = Role::all(); // Make sure you have a Role model and it's imported at the top of your controller
+        $roles = Role::all();// Make sure you have a Role model and it's imported at the top of your controller
         return view('user.formBuilder', compact('users', 'roles'));
     }
-    
+
 
     // Inside the constructor of your UserController
     public function __construct()

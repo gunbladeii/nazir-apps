@@ -60,4 +60,8 @@ Route::post('/user/{user}/update-name', [AdminController::class, 'updateName'])-
 Route::post('/admin/add-user', [AdminController::class, 'addUser'])->name('admin.add-user');
 Route::post('/user/change-password', [UserController::class, 'changePassword'])->name('user.changePassword');
 Route::get('/form-builder', [FormBuilderController::class, 'index'])->name('form-builder.index');
-Route::post('/form-builder/store', [FormBuilderController::class, 'store'])->name('form-builder.store');
+// For storing new forms
+Route::post('/form-builder/store/{formId?}', [FormBuilderController::class, 'store'])->name('form-builder.store');
+// For updating existing forms
+Route::post('/form-builder/update/{formId}', [FormBuilderController::class, 'update'])->name('form-builder.update');
+
