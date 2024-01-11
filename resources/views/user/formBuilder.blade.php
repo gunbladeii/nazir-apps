@@ -125,40 +125,40 @@
         });
     
         $('#form-builder-form').on('submit', function(e) {
+            // No need to prevent default if you want to submit the form
             var formElements = [];
 
             $('.form-preview .form-group').each(function() {
                 var label = $(this).find('label').first().text();
-                var $input = $(this).find('input, textarea, select').first();
-                var type = $input.data('type');
-                var name = $input.attr('name');
-                var value = $input.val();
-                var options = [];
+                var type = $(this).find('.form-control, .form-check-input').data('type'); // Adjusted to find data-type correctly
+                var name = $(this).find('[name]').attr('name'); // Adjusted to find name attribute correctly
+                var value;
 
-                if (type === 'radio' || type === 'checkbox') {
-                    // Capture all options for radio and checkboxes
-                    $(this).find('.form-check-input').each(function() {
-                        if ($(this).is(':checked')) {
-                            options.push({
-                                label: $(this).next('label').text(),
-                                value: $(this).val()
-                            });
-                        }
-                    });
-                    value = options; // Assign the array of selected options to value
+                if (type === 'radio') {
+                    value = $(this).find('input[type="radio"]:checked').val();
+                } else if (type === 'checkbox') {
+                    value = $(this).find('input[type="checkbox"]:checked').map(function() {
+                        return this.value;
+                    }).get(); // Get an array of checked values
+                } else {
+                    value = $(this).find('.form-control').val(); // Adjusted to find input or textarea value correctly
                 }
 
-
                 formElements.push({
+                    label: label,
                     type: type,
                     name: name,
-                    label: label,
                     value: value
                 });
             });
 
-            $('#form-data').val(JSON.stringify(formElements));
+            var formData = JSON.stringify(formElements);
+            $('#form-data').val(formData);
+
+            // Submit the form after setting the value
+            // this.submit(); // This line is commented out, but you can uncomment it to submit the form
         });
+
     });
     </script>    
 @endsection

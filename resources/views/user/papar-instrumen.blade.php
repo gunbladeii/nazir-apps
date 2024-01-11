@@ -31,43 +31,114 @@
         <h4 class="card-title">Papar Instrumen</h4>
     </div>
     @foreach ($forms as $form)
-    <div class="card-body">
-        <div class="card-header"><h5 class="card-title">Form #{{ $form->id }}</h5></div>
-        @php
-            $structure = json_decode($form->structure);
-        @endphp
-        @foreach ($structure as $element)
-            <div class="form-group">
-                @if (isset($element->label))
-                    <label>{{ $element->label }}</label>
-                @endif
-
-                @if ($element->type == 'text')
-                    <input type="text" class="form-control" name="{{ $element->name }}" value="{{ $element->value ?? '' }}" />
-                @elseif ($element->type == 'textarea')
-                    <textarea class="form-control" name="{{ $element->name }}">{{ $element->value ?? '' }}</textarea>
-                @elseif ($element->type == 'date')
-                    <input type="date" class="form-control" name="{{ $element->name }}" value="{{ $element->value ?? '' }}" />
-                @elseif ($element->type == 'radio' && isset($element->options))
-                    @foreach ($element->options as $option)
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="{{ $element->name }}" value="{{ $option->value }}" 
-                                {{ (isset($element->value) && $element->value == $option->value) ? 'checked' : '' }}>
-                            <label class="form-check-label">{{ $option->label }}</label>
-                        </div>
-                    @endforeach
-                @elseif ($element->type == 'checkbox' && isset($element->options))
-                    @foreach ($element->options as $option)
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="{{ $element->name }}[]" value="{{ $option->value }}" 
-                                {{ (isset($element->value) && is_array($element->value) && in_array($option->value, $element->value)) ? 'checked' : '' }}>
-                            <label class="form-check-label">{{ $option->label }}</label>
-                        </div>
-                    @endforeach
-                @endif
+    <form action="{{ route('form.update', $form->id) }}" method="post">
+        @csrf
+        @method('PUT') {{-- This is for the form to use the PUT HTTP method --}}
+        <div class="card-body">
+            <div class="card-header">
+                <h5 class="card-title">
+                    Form #{{ $form->id }}
+                </h5>
             </div>
-        @endforeach
-    </div>
+            @php
+                $structure = json_decode($form->structure);
+            @endphp
+            @foreach ($structure as $element)
+                <div class="form-group">
+                    @if (isset($element->label))
+                        <label>{{ $element->label }}</label>
+                    @endif
+
+                    @if ($element->type == 'text')
+                        <input type="text" class="form-control" name="{{ $element->name }}" value="{{ $element->value ?? '' }}" />
+                    @elseif ($element->type == 'textarea')
+                        <textarea class="form-control" name="{{ $element->name }}">{{ $element->value ?? '' }}</textarea>
+                    @elseif ($element->type == 'date')
+                        <input type="date" class="form-control" name="{{ $element->name }}" value="{{ $element->value ?? '' }}" />
+                    @elseif ($element->type == 'radio' && isset($element->options))
+                        @foreach ($element->options as $option)
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="{{ $element->name }}" value="{{ $option->value }}" 
+                                    {{ (isset($element->value) && $element->value == $option->value) ? 'checked' : '' }}>
+                                <label class="form-check-label">{{ $option->label }}</label>
+                            </div>
+                        @endforeach
+                    @elseif ($element->type == 'checkbox' && isset($element->options))
+                        @foreach ($element->options as $option)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="{{ $element->name }}[]" value="{{ $option->value }}" 
+                                    {{ (isset($element->value) && is_array($element->value) && in_array($option->value, $element->value)) ? 'checked' : '' }}>
+                                <label class="form-check-label">{{ $option->label }}</label>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+            @endforeach
+            <button type="submit" class="btn btn-primary float-right">Simpan Perubahan</button>
+            <input type="hidden" name="form_data" id="form-data">  
+        </div>
+    </form>
     @endforeach
 </div>
 @endsection
+
+@section('footer-plugin')
+<script>
+    function toggleEdit(button) {
+        let form = button.closest('form');
+        let editMode = form.querySelector('.save-form').classList.contains('d-none');
+        
+        // Toggle buttons
+        form.querySelector('.edit-form').classList.toggle('d-none');
+        form.querySelector('.save-form').classList.toggle('d-none');
+
+        // Toggle read-only on form elements
+        form.querySelectorAll('input, textarea, select').forEach(function(element) {
+            if (editMode) {
+                element.removeAttribute('readonly');
+                if(element.type === 'checkbox' || element.type === 'radio') {
+                    element.removeAttribute('disabled');
+                }
+            } else {
+                element.setAttribute('readonly', true);
+                if(element.type === 'checkbox' || element.type === 'radio') {
+                    element.setAttribute('disabled', true);
+                }
+            }
+        });
+    }
+
+    $('#form-builder-form').on('submit', function(e) {
+    e.preventDefault(); // Prevent the default form submission
+    var formElements = [];
+
+    $('.form-preview .form-group').each(function() {
+        var label = $(this).find('label').text();
+        var type = $(this).data('type'); // Make sure you have data-type attributes on your input elements
+        var name = $(this).find('[name]').attr('name');
+        var value;
+
+        if (type === 'radio' || type === 'checkbox') {
+            value = $(this).find('input:checked').map(function() {
+                return $(this).val();
+            }).get();
+        } else {
+            value = $(this).find('input, textarea, select').val();
+        }
+
+        formElements.push({
+            label: label,
+            type: type,
+            name: name,
+            value: value
+        });
+    });
+
+    $('#form-data').val(JSON.stringify(formElements));
+    
+    // Now you can submit the form
+    this.submit();
+});
+</script>
+@endsection
+

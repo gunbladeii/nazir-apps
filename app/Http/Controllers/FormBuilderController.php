@@ -13,18 +13,11 @@ class FormBuilderController extends Controller
         return view('user.formBuilder', compact('data'));
     }
 
-    public function formId()
-    {
-        $formId = "/";// Make sure you have a Role model and it's imported at the top of your controller
-        return view('user.formBuilder', compact('formId'));
-    }
-
-    // Handle form submission
-    // Handle form submission
     public function store(Request $request, $formId = null)
     {
         $formElements = json_decode($request->input('form_data'), true);
         
+        // Check if we are editing an existing form
         if ($formId) {
             // Fetch the existing Form model or handle it if it doesn't exist
             $form = Form::find($formId);
@@ -32,30 +25,69 @@ class FormBuilderController extends Controller
                 // Handle the case where the form doesn't exist
                 return back()->withErrors('Invalid form ID.');
             }
-            // Presumably update the form structure here
-            $form->structure = json_encode($formElements);
         } else {
             // If creating a new form, instantiate a new Form model
-            $form = new Form([
-                'user_id' => auth()->id(),
-                'structure' => json_encode($formElements), // Make sure to provide the structure
-            ]);
+            $form = new Form();
+            $form->user_id = auth()->id(); // Set the user_id to the current authenticated user's ID
+            $form->structure = json_encode($formElements);
+            $form->save(); // Save the new form to get an ID
+
+            // Update the $formId with the ID of the new form
+            $formId = $form->id;
         }
-        
-        $form->save();
-        // ... rest of your code for handling form elements
+
+        // Now continue to save form elements associated with $formId...
+        foreach ($formElements as $element) {
+            $newElement = new FormElementModel(); // Use your actual form element model
+            $newElement->form_id = $formId; // Set the form_id to associate with the form
+            $newElement->user_id = auth()->id();
+            $newElement->label = $element['label'];
+            $newElement->type = $element['type'];
+            $newElement->name = $element['name'];
+            // If the element is a checkbox, store its value as a JSON string
+            $newElement->value = is_array($element['value']) ? json_encode($element['value']) : $element['value'];
+            $newElement->save();
+        }
 
         return back()->with('success', 'Form saved successfully!');
     }
 
 
 
+
     // Handle form submission for updating existing forms
     public function update(Request $request, $formId)
     {
-        // The rest of your code here, making sure to use $formId to update the correct form.
-        return view('user.formBuilder', compact('formId'));
+        // Validate the request...
+
+        $form = Form::findOrFail($formId);
+        $formElements = json_decode($request->input('form_data'), true);
+
+        if ($formElements) {
+            foreach ($formElements as $element) {
+                // Assuming you have a FormElement model that relates to Form
+                $formElement = FormElement::where('form_id', $formId)
+                                        ->where('name', $element['name'])
+                                        ->first();
+                
+                if ($formElement) {
+                    // Update the existing form element
+                    $formElement->value = is_array($element['value']) ? json_encode($element['value']) : $element['value'];
+                    $formElement->save();
+                } else {
+                    // Handle cases where the form element does not exist, if necessary
+                }
+            }
+        } else {
+            // Handle cases where $formElements is null, which means the JSON was not decoded properly
+            // You could return an error message here
+        }
+
+        // Redirect back with a success message
+        return back()->with('success', 'Form updated successfully!');
     }
+
+
 
 
 
