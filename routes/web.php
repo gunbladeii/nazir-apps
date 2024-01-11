@@ -66,3 +66,4 @@ Route::post('/form-builder/store/{formId?}', [FormBuilderController::class, 'sto
 Route::post('/form-builder/update/{formId}', [FormBuilderController::class, 'update'])->name('form-builder.update');
 // Add a route for updating the form
 Route::put('/form/update/{form}', [FormBuilderController::class, 'update'])->name('form.update');
+Route::post('/form/update/{formId}', [FormBuilderController::class, 'update'])->name('form.update');

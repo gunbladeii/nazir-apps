@@ -49,7 +49,7 @@ class FormBuilderController extends Controller
             $newElement->save();
         }
 
-        return back()->with('success', 'Form saved successfully!');
+        return back()->with('success', 'Borang telah disimpan');
     }
 
 
@@ -65,7 +65,12 @@ class FormBuilderController extends Controller
 
         if ($formElements) {
             foreach ($formElements as $element) {
-                // Assuming you have a FormElement model that relates to Form
+                $newElement = new FormElementModel(); // Use your actual form element model
+                $newElement->form_id = $formId; // Set the form_id to associate with the form
+                $newElement->user_id = auth()->id();
+                $newElement->label = $element['label'];
+                $newElement->type = $element['type'];
+                $newElement->name = $element['name'];
                 $formElement = FormElement::where('form_id', $formId)
                                         ->where('name', $element['name'])
                                         ->first();
@@ -79,12 +84,11 @@ class FormBuilderController extends Controller
                 }
             }
         } else {
-            // Handle cases where $formElements is null, which means the JSON was not decoded properly
-            // You could return an error message here
+            return back()->with('failure', 'Sila isi medan yang kosong');
         }
 
         // Redirect back with a success message
-        return back()->with('success', 'Form updated successfully!');
+        return back()->with('success', 'Borang telah dikemaskini');
     }
 
 

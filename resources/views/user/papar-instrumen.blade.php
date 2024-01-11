@@ -30,10 +30,20 @@
     <div class="card-header">
         <h4 class="card-title">Papar Instrumen</h4>
     </div>
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if(session('failure'))
+                    <div class="alert alert-danger">
+                        {{ session('failure') }}
+                    </div>
+                @endif  
     @foreach ($forms as $form)
-    <form action="{{ route('form.update', $form->id) }}" method="post">
+    <form action="{{ route('form.update', ['formId' => $form->id]) }}" method="post">
         @csrf
-        @method('PUT') {{-- This is for the form to use the PUT HTTP method --}}
+        @method('PUT') {{-- Laravel uses POST method, but this directive tells Laravel to treat it as PUT --}}
         <div class="card-body">
             <div class="card-header">
                 <h5 class="card-title">
@@ -75,7 +85,7 @@
                 </div>
             @endforeach
             <button type="submit" class="btn btn-primary float-right">Simpan Perubahan</button>
-            <input type="hidden" name="form_data" id="form-data">  
+            <input type="hidden" name="form_data" id="form-data">
         </div>
     </form>
     @endforeach

@@ -32,6 +32,11 @@
     <div class="card-header">
         <h4 class="card-title">Bina Instrumen</h4>
     </div>
+    @if(session('success'))
+        <div class="alert alert-success">
+        {{ session('success') }}
+        </div>
+    @endif 
     <div class="card-body">
         <div class="form-builder">
                 <div class="form-group">
