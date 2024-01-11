@@ -59,36 +59,29 @@ class FormBuilderController extends Controller
     public function update(Request $request, $formId)
     {
         // Validate the request...
-
+        
         $form = Form::findOrFail($formId);
         $formElements = json_decode($request->input('form_data'), true);
 
-        if ($formElements) {
-            foreach ($formElements as $element) {
-                $newElement = new FormElementModel(); // Use your actual form element model
-                $newElement->form_id = $formId; // Set the form_id to associate with the form
-                $newElement->user_id = auth()->id();
-                $newElement->label = $element['label'];
-                $newElement->type = $element['type'];
-                $newElement->name = $element['name'];
-                $formElement = FormElement::where('form_id', $formId)
-                                        ->where('name', $element['name'])
-                                        ->first();
-                
-                if ($formElement) {
-                    // Update the existing form element
-                    $formElement->value = is_array($element['value']) ? json_encode($element['value']) : $element['value'];
-                    $formElement->save();
-                } else {
-                    // Handle cases where the form element does not exist, if necessary
-                }
-            }
-        } else {
+        if (!$formElements) {
             return back()->with('failure', 'Sila isi medan yang kosong');
         }
 
-        // Redirect back with a success message
+        foreach ($formElements as $element) {
+            $formElement = FormElementModel::where('form_id', $formId)
+                                        ->where('name', $element['name'])
+                                        ->first();
+            
+            if ($formElement) {
+                $formElement->value = is_array($element['value']) ? json_encode($element['value']) : $element['value'];
+                $formElement->save();
+            } else {
+                // Create a new form element or handle the case appropriately
+            }
+        }
+
         return back()->with('success', 'Borang telah dikemaskini');
     }
-    
+
+
 }
