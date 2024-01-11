@@ -90,25 +90,5 @@ class FormBuilderController extends Controller
         // Redirect back with a success message
         return back()->with('success', 'Borang telah dikemaskini');
     }
-
-
-
-
-
-    public function storeResponse(Request $request, $formId)
-    {
-        // You need to validate the request data here
-        // ...
-
-        $formResponse = new FormResponse; // Assume you have a FormResponse model
-        $formResponse->form_id = $formId; // Make sure you pass the correct formId as a parameter
-        $formResponse->data = json_encode($request->all()); // Convert the response data to JSON
-        $formResponse->save();
-
-        // Redirect to a page with a success message
-        return back()->with('success', 'Response saved successfully!');
-    }
-
     
-
 }
