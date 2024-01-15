@@ -67,3 +67,7 @@ Route::post('/form-builder/update/{formId}', [FormBuilderController::class, 'upd
 // Add a route for updating the form
 Route::put('/form/update/{form}', [FormBuilderController::class, 'update'])->name('form.update');
 Route::post('/form/update/{formId}', [FormBuilderController::class, 'update'])->name('form.update');
+//instrumen
+Route::get('/instrumen/form', 'InstrumenPenilaianController@showForm');
+Route::post('/instrumen/store', 'InstrumenPenilaianController@storeForm');
+Route::put('/instrumen/update/{id}', 'InstrumenPenilaianController@updateForm');
